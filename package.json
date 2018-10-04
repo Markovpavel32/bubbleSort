@@ -1,0 +1,21 @@
+{
+  "name": "bubblesort",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.9"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack --watch",
+    "server": "webpack-dev-server --inline --hot --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}
