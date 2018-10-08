@@ -1,6 +1,3 @@
-import createModel from './createData.js'
-import {dispatcher} from './dispatcher.js'
-
 class Sorter{
     constructor(data){
         this.data = data;
@@ -8,7 +5,6 @@ class Sorter{
         this.arrayOfBars = document.getElementsByClassName('bar');
         this.arrayOfIndexes = this.makeArr();
         this.lay = this.makeStatus();
-        this.changeIndex = 1;
     }
 
     makeCounter(){
@@ -38,11 +34,12 @@ class Sorter{
     }
 
     makeArr(){
-        let indexes = [];
+        /*let indexes = [];
         for(let i = 0; i < this.data.length; i++){
             indexes[i] = i;
         }
-        return indexes;
+        return indexes;*/
+        return Array(this.data.length).fill(0).map((v,i) => i);
     }
 
     makeStatus(){
@@ -55,14 +52,12 @@ class Sorter{
     }
 
     forward(){
-        //console.log(createModel());
         let counter = this.counter;
         const data = this.data;
         let lay = this.lay;
         let indexes = this.arrayOfIndexes;
         let h = [];
-        
-        //console.log(data);
+
         outer:for(let i = 0; i < data.length - 1; i++){
 
                 if(counter.get() >= data.length - i){
@@ -80,21 +75,19 @@ class Sorter{
                         counter.getNext();
                         for(let g = 0; g < this.arrayOfIndexes.length; g++){
                             h[g] = this.arrayOfIndexes[g];
-                        // console.log(h);
                         }
                         
                         lay.push(h);
-                        dispatcher.flag = 'step forward';
                         break outer;
                     }
                 counter.getNext();
-                dispatcher.flag = 'sorted';
                 }
         }
-        //console.log(data);
-        //console.log(counter.get());
         console.log(this.arrayOfIndexes);
-        return data;
+        return {
+            data: data,
+            indexes: indexes,
+        }
     } 
 
     backward(){
@@ -106,7 +99,6 @@ class Sorter{
 
         for(let i = 0; i < data.length; i++){
             if(lay[statusL - 1][i] !== lay[statusL - 2][i]){
-                this.changeIndex = i;
                 let y = data[i];
                 data[i] = data[i+1];
                 data[i + 1] = y;
@@ -115,18 +107,16 @@ class Sorter{
                 indexes[i + 1] = d;
                 counter.getBack();
                 lay.pop();
-                dispatcher.flag = 'step backward';
-                //console.log(data);
                 break;
             }
-            dispatcher.flag = 'sorted';
-            //counter.getBack();
-            //console.log(counter.get());
-            
         }
-        console.log(indexes);
-        return data;
+        console.log(lay);
+        return {
+            data: data,
+            lay: lay,
+        }
     }
 }
+
 
 export default Sorter;
