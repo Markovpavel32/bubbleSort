@@ -16,16 +16,16 @@ function init(){
     Render.render(model);
 };
 
-btnR.onclick = handleSort;
-btnL.onclick = handleResort;
+btnR.onclick = handleForward;
+btnL.onclick = handleBackward;
 
 
-function handleSort(){
+function handleForward(){
     const data = bubbleSort.forward();
     Render.sort(data);
 };
 
-function handleResort(){
+function handleBackward(){
     const data = bubbleSort.backward();
     Render.sort(data);
 };
