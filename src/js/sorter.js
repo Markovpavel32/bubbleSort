@@ -2,7 +2,6 @@ class Sorter{
     constructor(data){
         this.data = data;
         this.counter = this.makeCounter();
-        this.arrayOfBars = document.getElementsByClassName('bar');
         this.arrayOfIndexes = this.makeArr();
         this.massive = this.makeStatus();
     }
