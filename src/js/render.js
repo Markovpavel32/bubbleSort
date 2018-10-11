@@ -22,19 +22,16 @@ const Render = {
             }
     },
 
-    stepForward(obj){
+    sort(obj){
         let bar = document.getElementsByClassName('bar');
         for(let i = 0; i < obj.data.length; i++){
+            if(!(bar[obj.indexes[i]].style.left === `${i * 25}px`)) {
             bar[obj.indexes[i]].style.left = `${i * 25}px`;
+            bar[obj.indexes[i]].style.backgroundColor = 'blue';
+            setTimeout(function(){bar[obj.indexes[i]].style.backgroundColor = '#ff5a00';}, 500);
+        }
         }
     },
-
-    stepBackward(obj){
-        let bar = document.getElementsByClassName('bar');
-        for(let i = 0; i < obj.data.length; i++){
-            bar[obj.lay[obj.lay.length-1][i]].style.left = `${i * 25}px`;
-        }
-    }
 }
 
 

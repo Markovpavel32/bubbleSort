@@ -7,7 +7,7 @@ const input = document.getElementById('input');
 const btnR = document.getElementById('triangle_right');
 const btnL = document.getElementById('triangle_left');
 
-let bubbleSort = new Sorter([1]);
+let bubbleSort;
 input.oninput = init;
 function init(){
     const model = createData(input.value);
@@ -16,17 +16,16 @@ function init(){
     Render.render(model);
 };
 
-export {bubbleSort};
 btnR.onclick = handleSort;
 btnL.onclick = handleResort;
 
 
 function handleSort(){
     const data = bubbleSort.forward();
-    Render.stepForward(data);
+    Render.sort(data);
 };
 
 function handleResort(){
     const data = bubbleSort.backward();
-    Render.stepBackward(data);
+    Render.sort(data);
 };
