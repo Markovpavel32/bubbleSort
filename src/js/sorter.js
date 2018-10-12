@@ -56,7 +56,7 @@ class Sorter{
         let data = this.data;
         let indexes = this.arrayOfIndexes;
         for(let j = counter.get(); j <= this.rightBorder; j++){
-
+            
             if(this.massive[this.steps + 1] !== undefined){
                 this.steps++;
                 indexes = this.massive[this.steps].indexes.map(x=>x);
@@ -67,28 +67,28 @@ class Sorter{
             }
 
             if(counter.get() >= this.rightBorder){
-                        counter.reset();
-                        this.rightBorder--;
-                        j = 0;
-                    }
-                    if(data[j] > data[j+1]){
-                        [data[j], data[j+1]] = [data[j+1], data[j]];
-                        [indexes[j], indexes[j+1]] = [indexes[j+1], indexes[j]];
+                counter.reset();
+                this.rightBorder--;
+                j = 0;
+            }
+            if(data[j] > data[j+1]){
+                [data[j], data[j+1]] = [data[j+1], data[j]];
+                [indexes[j], indexes[j+1]] = [indexes[j+1], indexes[j]];
 
-                        counter.getNext();
+                counter.getNext();
                 this.steps++; 
-                        this.massive.push({indexes: this.arrayOfIndexes.map(x => x),
-                        data: this.data.map(x => x),
+                this.massive.push({indexes: this.arrayOfIndexes.map(x => x),
+                data: this.data.map(x => x),
                 counter: counter.get(),
                 rightBorder: this.rightBorder}
                 )
-                        break;
-                    }
+                break;
+            }
 
             
-                    counter.getNext();
+            counter.getNext();
                     
-                }
+        }
         return {
             data: data,
             indexes: indexes,
@@ -104,7 +104,7 @@ class Sorter{
             counter.set(this.massive[this.steps - 1].counter);
             this.rightBorder = this.massive[this.steps - 1].rightBorder;
             this.steps--;
-        }
+            }
         return {
             data: this.data,
             indexes: this.arrayOfIndexes,
