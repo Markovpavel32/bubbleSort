@@ -11,7 +11,6 @@ let bubbleSort;
 
 function init() {
   const model = createData(input.value);
-  console.log(model);
   bubbleSort = new Sorter(model);
   Render.render(model);
 }

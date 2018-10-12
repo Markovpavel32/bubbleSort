@@ -2,26 +2,19 @@ class Sorter {
   constructor(data) {
     this.data = data;
     this.counter = 0;
-    this.indexes = this.makeArr();
+    this.indexes = Array(this.data.length).fill(0).map((v, i) => i);
     this.massive = this.makeStatus();
     this.rightBorder = data.length - 1;
     this.steps = 0;
   }
 
-  makeArr() {
-    return Array(this.data.length).fill(0).map((v, i) => i);
-  }
-
   makeStatus() {
-    const status = [];
-    status[0] = {
+    return [{
       indexes: this.indexes.map(x => x),
       data: this.data.map(x => x),
-      counter: this.counter.get(),
+      counter: this.counter,
       rightBorder: this.data.length - 1,
-    };
-
-    return status;
+    }];
   }
 
   forward() {
