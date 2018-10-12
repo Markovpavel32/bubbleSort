@@ -1,5 +1,3 @@
 export default function createData(values) {
-    
-    return values.split('').map(x => +x);
-
+  return values.split('').map(x => +x);
 }
