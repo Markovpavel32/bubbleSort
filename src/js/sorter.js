@@ -4,6 +4,7 @@ class Sorter{
         this.counter = this.makeCounter();
         this.arrayOfIndexes = this.makeArr();
         this.massive = this.makeStatus();
+        this.rightBorder = data.length - 1;
     }
 
     makeCounter(){
@@ -52,25 +53,29 @@ class Sorter{
         const data = this.data;
         let indexes = this.arrayOfIndexes;
         console.log(data)
-        outer: for(let i = 0;i < data.length - 1; i++){
-                if(counter.get() >= data.length - 1 - i){
-                    counter.reset();
-                }
 
-                for(let j = counter.get(); j < data.length - 1; j++){
+                for(let j = counter.get(); j < this.right; j++){
+                    if(counter.get() > this.rightBorder){
+                        counter.reset();
+                        this.rightBorder--;
+                        j = 0;
+                    }
+
+
                     if(data[j] > data[j+1]){
                         [data[j], data[j+1]] = [data[j+1], data[j]];
                         [indexes[j], indexes[j+1]] = [indexes[j+1], indexes[j]];
+
                         counter.getNext();
+
                         this.massive.push({indexes: this.arrayOfIndexes.map(x => x),
                         data: this.data.map(x => x),
                         counter: counter.get(),})
-                        
-                        break outer;
+                        break;
                     }
                     counter.getNext();
                     
-                }  }
+                }
                 console.log(this.massive);
         return {
             data: data,
