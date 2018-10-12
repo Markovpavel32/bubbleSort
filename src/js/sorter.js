@@ -2,7 +2,7 @@ class Sorter{
     constructor(data){
         this.data = data;
         this.counter = this.makeCounter();
-        this.arrayOfIndexes = this.makeArr();
+        this.indexes = this.makeArr();
         this.massive = this.makeStatus();
         this.rightBorder = data.length - 1;
         this.steps = 0;
@@ -42,7 +42,7 @@ class Sorter{
         let status = [];
         let data = this.data
         status[0] ={
-            indexes: this.arrayOfIndexes.map(x => x),
+            indexes: this.indexes.map(x => x),
             data: this.data.map(x => x),
             counter: this.counter.get(),
             rightBorder: data.length - 1, 
@@ -59,8 +59,8 @@ class Sorter{
             
             if(this.massive[this.steps + 1] !== undefined){
                 this.steps++;
-                indexes = this.massive[this.steps].indexes.map(x=>x);
-                data = this.massive[this.steps].data.map(x=>x); 
+                this.indexes = this.massive[this.steps].indexes.map(x=>x);
+                this.data = this.massive[this.steps].data.map(x=>x); 
                 counter.set(this.massive[this.steps].counter);
                 this.rightBorder = this.massive[this.steps].rightBorder;
                 break;
@@ -71,13 +71,13 @@ class Sorter{
                 this.rightBorder--;
                 j = 0;
             }
-            if(data[j] > data[j+1]){
-                [data[j], data[j+1]] = [data[j+1], data[j]];
-                [indexes[j], indexes[j+1]] = [indexes[j+1], indexes[j]];
-
+            
+            if(this.data[j] > this.data[j+1]){
+                [this.data[j], this.data[j+1]] = [this.data[j+1], this.data[j]];
+                [this.indexes[j], this.indexes[j+1]] = [this.indexes[j+1], this.indexes[j]];
                 counter.getNext();
                 this.steps++; 
-                this.massive.push({indexes: this.arrayOfIndexes.map(x => x),
+                this.massive.push({indexes: this.indexes.map(x => x),
                 data: this.data.map(x => x),
                 counter: counter.get(),
                 rightBorder: this.rightBorder}
@@ -90,16 +90,15 @@ class Sorter{
                     
         }
         return {
-            data: data,
-            indexes: indexes,
+            data: this.data,
+            indexes: this.indexes,
         }
     } 
 
     backward(){
         let counter = this.counter;
-            
         if(this.massive[this.steps - 1] !== undefined){
-            this.arrayOfIndexes = this.massive[this.steps - 1].indexes.map(x=>x);
+            this.indexes = this.massive[this.steps - 1].indexes.map(x=>x);
             this.data = this.massive[this.steps - 1].data.map(x=>x); 
             counter.set(this.massive[this.steps - 1].counter);
             this.rightBorder = this.massive[this.steps - 1].rightBorder;
@@ -107,7 +106,7 @@ class Sorter{
             }
         return {
             data: this.data,
-            indexes: this.arrayOfIndexes,
+            indexes: this.indexes,
         }
     }
 }
