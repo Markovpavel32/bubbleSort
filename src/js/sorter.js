@@ -98,11 +98,12 @@ class Sorter{
     backward(){
         let counter = this.counter;
         if(this.massive[this.steps - 1] !== undefined){
-            this.indexes = this.massive[this.steps - 1].indexes.map(x=>x);
-            this.data = this.massive[this.steps - 1].data.map(x=>x); 
-            counter.set(this.massive[this.steps - 1].counter);
-            this.rightBorder = this.massive[this.steps - 1].rightBorder;
-            this.steps--;
+            this.steps--
+            this.indexes = this.massive[this.steps].indexes.map(x=>x);
+            this.data = this.massive[this.steps].data.map(x=>x); 
+            counter.set(this.massive[this.steps].counter);
+            this.rightBorder = this.massive[this.steps].rightBorder;
+            ;
             }
         return {
             data: this.data,
