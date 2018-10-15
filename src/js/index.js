@@ -1,7 +1,7 @@
 import createData from './createData';
 import Render from './render';
 import Sorter from './sorter';
-
+import getChar from './getChar';
 
 const input = document.getElementById('input');
 const btnR = document.getElementById('triangle_right');
@@ -27,21 +27,6 @@ function handleBackward() {
 }
 btnR.onclick = handleForward;
 btnL.onclick = handleBackward;
-
-
-function getChar(event) {
-  if (event.which == null) { // IE
-    if (event.keyCode < 32) return null; // спец. символ
-    return String.fromCharCode(event.keyCode);
-  }
-
-  if (event.which !== 0 && event.charCode !== 0) { // все кроме IE
-    if (event.which < 32) return null; // спец. символ
-    return String.fromCharCode(event.which); // остальные
-  }
-
-  return null; // спец. символ
-}
 
 function onlyNumbers(e) {
   if (e.ctrlKey || e.altKey || e.metaKey) return;
