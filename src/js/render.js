@@ -16,6 +16,7 @@ const Render = {
                 height: ${2 * h}px;\
                 width: 20px;\
                 left: ${i * 25}px;\
+                transition: left 1000ms linear;\
                 `;
       div.innerHTML = `${arr[i]}`;
     }
@@ -27,7 +28,7 @@ const Render = {
       if (!(bar[obj.indexes[i]].style.left === `${i * 25}px`)) {
         bar[obj.indexes[i]].style.left = `${i * 25}px`;
         bar[obj.indexes[i]].style.backgroundColor = 'blue';
-        setTimeout(() => { bar[obj.indexes[i]].style.backgroundColor = '#ff5a00'; }, 500);
+        bar[obj.indexes[i]].addEventListener('transitionend', () => { bar[obj.indexes[i]].style.backgroundColor = '#ff5a00'; });
       }
     }
   },
