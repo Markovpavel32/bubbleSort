@@ -2,7 +2,7 @@ import EventBus from './pub-sub';
 
 class StepCounterPanel {
   constructor() {
-    this.stepPanel = document.getElementsByClassName('stepControlPanel')[0];
+    [this.stepPanel] = document.getElementsByClassName('stepControlPanel');
     this.countersBar = document.createElement('div');
     EventBus.subscribe('sort', this.change.bind(this));
   }

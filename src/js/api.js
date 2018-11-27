@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 import createData from './createData';
 import Render from './render';
 import Sorter from './sorter';
@@ -12,12 +13,14 @@ class SorterCard {
     this.btnL = document.createElement('div');
     this.btnDeleteSorter = document.createElement('div');
     this.stepBar = document.createElement('div');
-    this.bubbleSort;
+    this.bubbleSort = '';
     this.info = {
       sortObj: this.bubbleSort,
       action: 'add',
     };
     this.color = color;
+    this.time = 3;
+    this.duration = 4000;
   }
 
   launch() {
@@ -68,9 +71,7 @@ class SorterCard {
     this.mainCard.appendChild(this.input);
     this.input.setAttribute('type', 'text');
     // btnDeleteSorter render
-    this.mainCard.appendChild(this.btnDeleteSorter);
-    this.btnDeleteSorter.classList.add('btn_delete_sorter');
-    this.btnDeleteSorter.textContent = 'X';
+    this.deleteBtn();
     // btnR render
     this.mainCard.appendChild(this.btnR);
     this.btnR.classList.add('triangle_right');
@@ -83,29 +84,11 @@ class SorterCard {
   }
 
   connectionToServer() {
-    /* EventBus.publish('sort', {
-          sortObj: 123,
-          steps: 'Loading...',
-          action: 'add',
-          color: this.color,
-        }); */
     this.loading();
     fetch(this.url).then((response) => {
       if (response.status !== 200) {
         this.error();
-        const duration = 4000;
-        let time = 3;
-        const intervalID = setInterval(timer.bind(this), 1000);
-        function timer() {
-          this.mainCard.textContent = '';
-          this.mainCard.textContent = `Error. Retry in ${time}`;
-          time -= 1;
-          if (time === 0) {
-            clearInterval(intervalID);
-          }
-        }
-
-        return setTimeout(this.connectionToServer.bind(this), duration);
+        return setTimeout(this.connectionToServer.bind(this), this.duration);
       }
 
       this.render();
@@ -118,12 +101,6 @@ class SorterCard {
         const data = createData(this.input.value);
         this.bubbleSort = new Sorter(data, this.mainCard, this.color);
         Render.render(this.bubbleSort.model());
-        /* EventBus.publish('sort', {
-        sortObj: 123,
-        steps: 'Loading...',
-        action: 'remove',
-        color: this.color,
-      }); */
         EventBus.publish('sort', {
           sortObj: this.bubbleSort,
           steps: 0,
@@ -139,13 +116,10 @@ class SorterCard {
     this.mainCard.style.cssText = `
       height: 100px;\
       width: 200px;\
-      //background-color: blue\
       `;
     this.mainCard.style.backgroundColor = this.color;
     this.mainCard.textContent = 'Loading...';
-    this.mainCard.appendChild(this.btnDeleteSorter);
-    this.btnDeleteSorter.classList.add('btn_delete_sorter');
-    this.btnDeleteSorter.textContent = 'X';
+    this.deleteBtn();
   }
 
   error() {
@@ -154,13 +128,25 @@ class SorterCard {
     this.mainCard.style.cssText = `
     height: 100px;\
     width: 200px;\
-    //background-color: blue\
     `;
+    this.mainCard.appendChild(this.btnDeleteSorter);
+    this.deleteBtn();
+    this.mainCard.textContent = 'Error...';
+    const intervalID = setInterval(timer.bind(this), 1000);
+    function timer() {
+      this.mainCard.textContent = '';
+      this.mainCard.textContent = `Error. Retry in ${this.time}`;
+      this.time -= 1;
+      if (this.time === 0) {
+        clearInterval(intervalID);
+      }
+    }
+  }
+
+  deleteBtn() {
     this.mainCard.appendChild(this.btnDeleteSorter);
     this.btnDeleteSorter.classList.add('btn_delete_sorter');
     this.btnDeleteSorter.textContent = 'X';
-    this.mainCard.style.backgroundColor = this.color;
-    this.mainCard.textContent = 'Error...';
   }
 }
 
