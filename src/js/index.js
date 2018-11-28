@@ -8,9 +8,9 @@ function getRandomColor() {
 }
 
 function addSorter() {
-  const input = new SorterCard(getRandomColor());
+  const color = getRandomColor();
+  const input = new SorterCard(color);
   const counterPanel = new StepCounterPanel();
-
   input.render();
   input.connectionToServer();
   input.launch();

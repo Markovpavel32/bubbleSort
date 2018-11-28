@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
 const EventBus = {
   channels: {},
   sorters: new Map(),
@@ -10,8 +12,10 @@ const EventBus = {
 
   publish(channelName, data) {
     let ALLSTEPS = 0;
+
     const channel = this.channels[channelName];
     if (!this.channels[channelName] || !this.channels[channelName].length) return;
+
     if (data.action === 'remove') this.sorters.delete(data.sortObj);
 
     if (data.action === 'add') {
@@ -20,14 +24,12 @@ const EventBus = {
         color: data.color,
       });
     }
-
-
     data.update = this.sorters;
     for (const a of this.sorters.values()) {
       ALLSTEPS += a.count;
     }
+
     data.allSteps = ALLSTEPS;
-    console.log(this.sorters);
     channel.forEach(listener => listener(data));
   },
 };
