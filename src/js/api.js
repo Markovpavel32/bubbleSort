@@ -108,8 +108,6 @@ class SorterCard {
   }
 
   loading() {
-    this.mainCard.style.cssText = '';
-    this.mainCard.textContent = '';
     this.mainCard.style.cssText = `
       height: 100px;\
       width: 200px;\
@@ -120,18 +118,10 @@ class SorterCard {
   }
 
   error() {
-    /*this.mainCard.style.cssText = '';
-    this.mainCard.textContent = '';*/
-    this.mainCard.style.cssText = `
-    height: 100px;\
-    width: 200px;\
-    `;
-    this.mainCard.appendChild(this.btnDeleteSorter);
-    this.makeDeleteBtn();
     this.mainCard.textContent = 'Error...';
+    this.makeDeleteBtn();
     const intervalID = setInterval(timer.bind(this), 1000);
     function timer() {
-      this.mainCard.textContent = '';
       this.mainCard.textContent = `Error. Retry in ${this.time}`;
       this.time -= 1;
       if (this.time === 0) {
