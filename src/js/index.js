@@ -1,5 +1,5 @@
 import SorterCard from './api';
-import StepCounterPanel from './stepCounterPanel';
+import counterPanel from './stepCounterPanel';
 
 const makeBtn = document.getElementsByClassName('addSorter')[0];
 function getRandomColor() {
@@ -10,11 +10,7 @@ function getRandomColor() {
 function addSorter() {
   const color = getRandomColor();
   const input = new SorterCard(color);
-  const counterPanel = new StepCounterPanel();
-  input.render();
-  input.connectionToServer();
-  input.launch();
+  input.connectToServer();
 }
-
 
 makeBtn.onclick = addSorter;

@@ -3,7 +3,7 @@ import EventBus from './pub-sub';
 
 class StepCounterPanel {
   constructor(color) {
-    [this.stepPanel] = document.getElementsByClassName('stepControlPanel');
+    this.stepPanel = document.getElementById("stepControlPanel");
     this.countersBar = document.createElement('div');
     EventBus.subscribe('sort', this.change.bind(this));
     this.color = color;
@@ -34,5 +34,6 @@ class StepCounterPanel {
     }
   }
 }
+const counterPanel = new StepCounterPanel();
 
-export default StepCounterPanel;
+export default counterPanel;

@@ -3,8 +3,7 @@
 const EventBus = {
   channels: {},
   sorters: new Map(),
-  // let sorters = new Map();
-  // let count = 0;
+
   subscribe(channelName, listener) {
     if (!this.channels[channelName]) this.channels[channelName] = [];
     this.channels[channelName].push(listener);
@@ -12,8 +11,8 @@ const EventBus = {
 
   publish(channelName, data) {
     let ALLSTEPS = 0;
-
     const channel = this.channels[channelName];
+
     if (!this.channels[channelName] || !this.channels[channelName].length) return;
 
     if (data.action === 'remove') this.sorters.delete(data.sortObj);
@@ -24,6 +23,7 @@ const EventBus = {
         color: data.color,
       });
     }
+
     data.update = this.sorters;
     for (const a of this.sorters.values()) {
       ALLSTEPS += a.count;

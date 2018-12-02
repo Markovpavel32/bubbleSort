@@ -8,17 +8,56 @@ class SorterCard {
   constructor(color) {
     this.url = 'http://127.0.0.1:1234/array';
     this.mainCard = document.createElement('div');
+    this.mainCard.classList.add('main_card');
+    this.message = document.createElement('p');
     this.input = document.createElement('input');
+    this.mainCard.appendChild(this.message);
+    document.body.appendChild(this.mainCard);
     this.btnR = document.createElement('div');
     this.btnL = document.createElement('div');
     this.btnDeleteSorter = document.createElement('div');
+    this.makeDeleteBtn();
     this.bubbleSort = '';
     this.color = color;
     this.time = 3;
     this.duration = 4000;
+    this.cancel = false;
   }
 
-  launch() {
+
+  connectToServer() {
+    if (!this.cancel) {
+      this.loading();
+      fetch(this.url).then((response) => {
+        if (response.status !== 200) {
+          this.error();
+          return setTimeout(this.connectToServer.bind(this), this.duration);
+        }
+        this.render();
+        return Promise.resolve(response);
+      })
+        .then(response => response.json()).then((arr) => {
+          arr.result.splice(10);
+          this.makeSorter(arr.result);
+          Render.render(this.bubbleSort.model());
+          EventBus.publish('sort', {
+            sortObj: this.bubbleSort,
+            steps: this.bubbleSort.model().steps,
+            action: 'add',
+            color: this.color,
+          });
+          this.api();
+        });
+    }
+  }
+
+  makeSorter(info) {
+    this.input.value = info.join('');
+    const data = createData(this.input.value);
+    this.bubbleSort = new Sorter(data, this.mainCard, this.color);
+  }
+
+  api() {
     function handleForward() {
       const data = this.bubbleSort.forward();
       Render.sort(data);
@@ -50,6 +89,7 @@ class SorterCard {
         action: 'remove',
         color: this.color,
       });
+      this.cancel = true;
     }
 
     this.btnR.onclick = handleForward.bind(this);
@@ -59,53 +99,23 @@ class SorterCard {
 
   render() {
     this.mainCard.style.cssText = '';
-    this.mainCard.textContent = '';
+    this.message.textContent = '';
 
-    document.body.appendChild(this.mainCard);
-    this.mainCard.classList.add('main_card');
-    // input render
     this.mainCard.appendChild(this.input);
     this.input.setAttribute('type', 'text');
-    // btnDeleteSorter render
+
     this.makeDeleteBtn();
-    // btnR render
+
     this.mainCard.appendChild(this.btnR);
     this.btnR.classList.add('triangle_right');
-    // btnL render
+
     this.mainCard.appendChild(this.btnL);
     this.btnL.classList.add('triangle_left');
-    // container of bars render
+
     const containerOfBars = document.createElement('div');
     this.mainCard.appendChild(containerOfBars);
   }
 
-  connectionToServer() {
-    this.loading();
-    fetch(this.url).then((response) => {
-      if (response.status !== 200) {
-        this.error();
-        return setTimeout(this.connectionToServer.bind(this), this.duration);
-      }
-
-      this.render();
-      return Promise.resolve(response);
-    })
-      .then(response => response.json()).then((arr) => {
-        arr.result.splice(10);
-
-        this.input.value = arr.result.join('');
-        const data = createData(this.input.value);
-        this.bubbleSort = new Sorter(data, this.mainCard, this.color);
-        Render.render(this.bubbleSort.model());
-
-        EventBus.publish('sort', {
-          sortObj: this.bubbleSort,
-          steps: 0,
-          action: 'add',
-          color: this.color,
-        });
-      });
-  }
 
   loading() {
     this.mainCard.style.cssText = `
@@ -113,16 +123,14 @@ class SorterCard {
       width: 200px;\
       `;
     this.mainCard.style.backgroundColor = this.color;
-    this.mainCard.textContent = 'Loading...';
-    this.makeDeleteBtn();
+    this.message.textContent = 'Loading...';
   }
 
   error() {
-    this.mainCard.textContent = 'Error...';
-    this.makeDeleteBtn();
+    this.message.textContent = 'Error...';
     const intervalID = setInterval(timer.bind(this), 1000);
     function timer() {
-      this.mainCard.textContent = `Error. Retry in ${this.time}`;
+      this.message.textContent = `Error. Retry in ${this.time}`;
       this.time -= 1;
       if (this.time === 0) {
         clearInterval(intervalID);
@@ -133,7 +141,6 @@ class SorterCard {
   makeDeleteBtn() {
     this.mainCard.appendChild(this.btnDeleteSorter);
     this.btnDeleteSorter.classList.add('btn_delete_sorter');
-    this.btnDeleteSorter.textContent = 'X';
   }
 }
 
