@@ -5,3 +5,5 @@ createData.test.js
 .babelrc
 babl.config.js
 /__tests__
+.flowconfig
+.eslintr.js
